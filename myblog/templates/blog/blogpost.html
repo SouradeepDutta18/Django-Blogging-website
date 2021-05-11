@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myblog | {{blog.post_title}}</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <Style>
+
+.navbar-brand{
+          margin-right: 2rem;
+        }
+        .nav-link {
+    margin-right: 30px;
+}
+             ul.navbar-nav > li > a:hover {
+    background-color: cyan;
+    color:black!important;
+    transform: scale(1.2);
+}
+@media screen and (max-width: 1200px) {
+          ul.navbar-nav > li > a:hover {
+            background-color: cyan;
+    color:black!important;
+    transform: scale(1.0);
+}
+            
+            
+        }
+        .container{
+            margin-top: 26px;
+        }
+       .sugg{
+           display: block;
+           margin: 0 auto;
+           
+       }
+       .sidelinks:hover .icon{
+         color: red;
+         transform: scale(1.5);
+       }
+       
+       .brandimage{
+          color:  cyan!important;
+         // animation: glow 0.5s ease-in-out infinite alternate;
+          
+        }
+        .container{
+          min-height: 100vh;
+        }
+        pre {
+display: flex;
+white-space: normal;
+word-break: break-word;
+}
+        @keyframes changecolor{
+          0%{
+            color: black;
+          }
+          25%{
+            color: red;
+
+          }
+          75%{
+            color:darkorange;
+          }
+          100%{
+            color: cyan;
+          }
+        }
+
+       .userimg{
+        width: 75%;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid pink;
+    border-radius: 18%;
+       }
+    
+       .sidelinks:hover .icon{
+         color: red;
+         transform: scale(1.5);
+       }
+       .user-comment{
+          
+           max-width: 80%;
+       }
+       .col-md-11{
+           background: #fafafa;
+       }
+       .comment-section{
+           margin-right:0px;
+       }
+       .user{
+           margin-bottom: 2px;
+       }
+       .replyimg{
+         width:75%;
+         display: block;
+         margin: 0 auto;
+         border:1px solid pink;
+       }
+       .reply{
+         background: #fafafa;
+       }
+       
+  .badge{
+       
+    font-size: 10px;
+    position: relative;
+    top: -6px;
+    background: darkgray;
+ }
+ .sugg{
+    height: 480px;
+    width: 800px;
+     max-height: 15%;
+     max-width: 80%;
+ }
+ @media only screen and (max-width:925px){
+   .userimg{
+     margin-left: -12px;
+     width: 20px;
+   }
+   .replyimg{
+    margin-left: -12px;
+     width: 20px;
+   }
+
+ }
+ 
+ @media only screen and (max-width:400px){
+  .user-comment{
+    margin-left: 10px;
+  }
+  .reply{
+    margin-left: 22px;
+  }
+  
+ }
+ 
+.bg-light {
+    background-color:  #3b5998!important;
+}
+.navbar-brand{
+          margin-right: 2rem;
+        }
+
+    </Style>
+</head>
+<body>
+  {% load extras %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-light">
+    <a class="navbar-brand brandimage" style="color: black;" href="/">My<span style="color: red;">Blog</span> |</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item ">
+          <a class="nav-link" href="/">Home </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/about">about</a>
+        </li> -->
+        <li class="nav-item active ">
+          <a class="nav-link" href="/blog">Blog <span class="sr-only">(current)</span> </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">contact</a>
+        </li>
+        {% if request.user.is_authenticated %} 
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/upload/">create</a>
+        </li> 
+        <li class="nav-item ">
+          <a class="nav-link" href="/blog/profile">Profile </a>
+        </li>
+    {% endif %} 
+        
+       
+      </ul>
+      <form class="form-inline my-2 my-lg-0" method="POST">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <a class="btn btn-outline-success my-2 my-sm-0" href="/search" type="submit">Search</a>
+
+       {%  if not request.user.is_authenticated %} 
+        <a href="/signup" class="btn btn-success mx-1">Sign up</a>
+        <a href="/login" class="btn btn-success">Log in</a>
+       {% endif %} 
+       {% if request.user.is_authenticated %}
+       <div class="dropdown mx-1">
+        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Welcome {{request.user}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a href="/logout" style="text-decoration: none;color: black;" class="mx-3">Log out</a>
+          
+        </div>
+      </div>
+       
+       {% endif %}
+      </form>
+      
+      
+    </div>
+  </nav>
+
+ <div class="container">
+   <div class="blog-post">
+
+    <h2 class="blog-post-title">{{blog.post_title}}</h2>
+    <p class="blog-post-meta">{{blog.pub_date}} by <b>{{blog.author_name}}</b><a href="#"></a></p>
+    <p style="margin:1px;"><i class="fa fa-eye" aria-hidden="true"></i> viewed by {{blog.viewer_count}} people</p>
+    {% if blog.video_id == "" %} 
+    <img class="sideimg" src="/media/{{blog.thumbnail}}" alt="" style="display: block; margin: 0 auto; max-width: 80%;">  
+    {% endif %}
+   <p style="margin-top: 20px;">
+      {{blog.content}}
+   </p>
+    </div>
+   {% if blog.video_id != "" %} 
+    <iframe class="sugg"  
+    src="https://www.youtube.com/embed/{{blog.video_id}}?autoplay=1"> 
+    </iframe> 
+   {% endif %} 
+  
+{% if request.user.is_authenticated %}
+   <form class="comment" method="POST" action="/blog/posts/postComment/">{% csrf_token %}
+       <h4 style="margin: 0;">Comment(<span>{{comments|length}}</span>)</h4>
+    <div class="form-group">
+      <input type="hidden" value={{blog.post_id}} name="post_id">
+      <input type="text" class="form-control" id="exampleInputcomment" aria-describedby="emailHelp" placeholder="Type your comment here..." name="comment">
+      <button type="submit" class="btn btn-primary mt-1">post</button>
+    </div>
+    
+   
+  </form>
+ {% endif %} 
+ {% if not request.user.is_authenticated %}
+   <a href="/login" class="btn btn-success my-1" >You must log in first to comment</a>
+ {% endif %}
+  {% load humanize %}
+  <div class="comments">
+     {% for comment in comments %} 
+      <div class="row my-2 comment-section">
+          <div class="col-md-1 col-sm-1 col-1">
+            <img class="userimg" src="https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png" alt="">
+          </div>
+          <div class="col-md-11 col-sm-11 col-11" >
+            <div class="user-comment">
+                <h5>{{comment.user}} <span class="badge badge-secondary user">{{comment.timestamp|naturaltime}}</span></h5>
+                {{comment.content}}
+            </div>
+           {% if request.user.is_authenticated %} 
+            <div class="replies">
+                
+                    
+                    <p style="margin: 0;">
+                      <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample{{comment.sno}}" role="button" aria-expanded="false" aria-controls="collapseExample{{comment.sno}}" class="mt-2">
+                       Reply
+                      </a>
+                    </p>
+                    <div class="collapse" id="collapseExample{{comment.sno}}">
+                      <div class="card card-body mt-1" style="padding: 0;">
+                        <form class="comment" method="POST" action="/blog/posts/postComment/">{% csrf_token %}
+                          <div class="form-group" style="margin-bottom: 2px;">
+                            <input type="hidden" value={{blog.post_id}} name="post_id">
+                             <input type="hidden" value={{comment.sno}} name="parent_comment_sno">
+                             <input type="text" class="form-control" id="exampleInputcomment" aria-describedby="emailHelp" placeholder="Type your reply here..." name="comment">
+                             <button type="submit" class="btn btn-primary mt-1">post</button>
+                           </div>
+                           </form>
+                      </div>
+                    </div>
+                 
+            </div> 
+           {% endif %} 
+           
+
+        {% for reply in replydict|getval:comment.sno %}    
+         <div class="reply" style="
+         margin-left: 10px;">
+               <div class="row my-2">
+                 <div class="col-md-1 col-sm-1 col-1">
+                  <img class="replyimg" src="https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png" alt="">
+
+                 </div>
+                 <div class="col-md-11 col-sm-11 col-11">
+                  <div class="user-comment">
+                    <h5>{{reply.user}} <span class="badge badge-secondary user">{{reply.timestamp|naturaltime}}</span></h5>
+                    {{reply.content}}
+                </div>
+                 </div>
+               </div>
+         </div>
+        {% endfor %} 
+
+      </div>
+     </div>
+     {% endfor %} 
+  </div>
+   
+</div>
+<div style="background: black; color: white; margin-top: 100px;">
+  <footer class="page-footer font-small blue pt-4">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+  
+      <!-- Grid row -->
+      <div class="row">
+  
+        <!-- Grid column -->
+        <div class="col-md-6 mt-md-0 mt-3">
+  
+          <!-- Content -->
+          <h5 class="text-uppercase">my<span style="color: cyan;">Blog</span></h5>
+          <p>"My Blog" is a fictional blog website created for the purpose of sharing to the world.
+            This is the website and moreover home to the people who are inspired by this fact, that sharing a idea, a good content can make this world, a better world.
+          </p>
+          <br>
+      
+          <p>Contact: 123456789</p>
+          <p>Email: myblog@hotmail.com</p>
+  
+        </div>
+        <!-- Grid column -->
+  
+        <hr class="clearfix w-100 d-md-none pb-3">
+  
+        <!-- Grid column -->
+        <div class="col-md-3 mb-md-0 mb-3">
+  
+          <!-- Links -->
+          <h5 class="text-uppercase">Quick Links</h5>
+  
+          <ul class="list-unstyled">
+            <li>
+              <a  href="/">Home </a>
+            </li>
+            <li>
+              <a  href="/blog">Blog </a>
+            </li>
+            <li>
+              <a  href="/contact">Contact </a>
+            </li>
+            <!-- <li>
+              <a  href="/about">About </a>
+            </li> -->
+          </ul>
+  
+        </div>
+        <!-- Grid column -->
+  
+        <!-- Grid column -->
+        <div class="col-md-3 mb-md-0 mb-3">
+  
+          <!-- Links -->
+          <h5 class="text-uppercase">Links</h5>
+  
+          <ul class="list-unstyled">
+            <li class="sidelinks">
+              <button type="button" class="btn btn-fb"><i class="fa fa-facebook left icon"></i> Like us on Facebook</button>
+<!--Twitter-->
+
+<!--Google +-->
+
+<!--Linkedin-->
+
+            </li >
+            <li class="sidelinks">
+              <button type="button" class="btn btn-tw"><i class="fa fa-twitter left icon"></i> Like us on Twitter</button>
+            </li>
+            <li class="sidelinks">
+              <button type="button" class="btn btn-gplus"><i class="fa fa-google-plus left icon"></i>Like us on Google</button>
+            </li>
+            <li class="sidelinks">
+              <button type="button" class="btn btn-li"><i class="fa fa-linkedin left icon"></i> Like us on Instagram</button>
+            </li>
+          </ul>
+  
+        </div>
+        <!-- Grid column -->
+  
+      </div>
+      <!-- Grid row -->
+  
+    </div>
+    <!-- Footer Links -->
+  
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3" >© 2020 Copyright:
+      <a href="/"> Made with ❤ by Souradeep Dutta</a>
+    </div>
+    <!-- Copyright -->
+  
+  </footer>
+ </div> 
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>myblog | login</title>
+    <style>
+        body{
+            
+      
+        }
+        .top{
+          position: sticky;
+          top:0;
+          left: 0;
+        }
+        .container{
+          display: grid;
+          place-items: center;
+          min-height: 100vh;
+        
+        }
+        .form-group{
+          
+          transform: translateY(-50%);
+        }
+        .container button[type="submit"]{
+          width: 100%;
+        }
+        ul.navbar-nav > li > a:hover {
+    background-color: cyan;
+    color:black!important;
+    transform: scale(1.2);
+}
+@media screen and (max-width: 1200px) {
+          ul.navbar-nav > li > a:hover {
+            background-color: cyan;
+    color:black!important;
+    transform: scale(1.0);
+}
+            
+            
+        }
+.nav-link {
+    margin-right: 30px;
+}
+.navbar-brand{
+          margin-right: 2rem;
+        }
+.bg-light {
+    background-color:  #3b5998!important;
+}
+.col-md-6{
+  padding: 60px;
+}
+.brandimage{
+          color:  cyan!important;
+         // animation: glow 0.5s ease-in-out infinite alternate;
+          
+        }
+
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-light top">
+    <a class="navbar-brand brandimage" style="color: black;" href="/">My<span style="color: red;">Blog</span> |</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/about">about</a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/blog">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">contact</a>
+        </li>
+      
+        <li class="nav-item  active">
+          <a class="nav-link" href="/login">Log In <span class="sr-only">(current)</span></a>
+        </li>
+        
+       
+      </ul>
+      <form class="form-inline my-2 my-lg-0" method="POST">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <a class="btn btn-outline-success my-2 my-sm-0" href="/search" type="submit">Search</a>
+
+       {%  if not request.user.is_authenticated %} 
+        <a href="/signup" class="btn btn-success mx-1">Sign up</a>
+        <a href="/login" class="btn btn-success">Log in</a>
+       {% endif %} 
+       {% if request.user.is_authenticated %}
+       <div class="dropdown mx-1">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Welcome {{request.user}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a href="/logout" style="text-decoration: none;color: black;" class="mx-3">Log out</a>
+          
+        </div>
+      </div>
+       
+       {% endif %}
+      </form>
+      
+      
+    </div>
+  </nav>
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+       
+      <div class="container">
+        
+        <form action="/login/" method="POST"> {% csrf_token %}
+          
+            <div class="form-group">
+                <label for="exampleFormControlInput0">Username</label>
+                <input type="text" class="form-control" id="exampleFormControlInput0" name="username" placeholder="johnny1994">
+              </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Password</label>
+              <input type="password" class="form-control" id="exampleFormControlInput1" name="password" >
+            </div>
+           
+            <button type="submit" class="btn btn-success">submit</button>
+          </form>
+    </div>
+    <div style="background: black; color: white;">
+      <footer class="page-footer font-small blue pt-4">
+    
+        <!-- Footer Links -->
+        <div class="container-fluid text-center text-md-left">
+      
+          <!-- Grid row -->
+          <div class="row">
+      
+            <!-- Grid column -->
+            <div class="col-md-6 mt-md-0 mt-3">
+      
+              <!-- Content -->
+              <h5 class="text-uppercase">my<span style="color: cyan;">Blog</span></h5>
+              <p>"My Blog" is a fictional blog website created for the purpose of sharing to the world.
+                This is the website and moreover home to the people who are inspired by this fact, that sharing a idea, a good content can make this world, a better world.
+              </p>
+              <br>
+          
+              <p>Contact: 123456789</p>
+              <p>Email: myblog@hotmail.com</p>
+      
+            </div>
+            <!-- Grid column -->
+      
+            <hr class="clearfix w-100 d-md-none pb-3">
+      
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+      
+              <!-- Links -->
+              <h5 class="text-uppercase">Quick Links</h5>
+      
+              <ul class="list-unstyled">
+                <li>
+                  <a  href="/">Home </a>
+                </li>
+                <li>
+                  <a  href="/blog">Blog </a>
+                </li>
+                <li>
+                  <a  href="/contact">Contact </a>
+                </li>
+                <!-- <li>
+                  <a  href="/about">About </a>
+                </li> -->
+              </ul>
+      
+            </div>
+            <!-- Grid column -->
+      
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+      
+              <!-- Links -->
+              <h5 class="text-uppercase">Links</h5>
+      
+              <ul class="list-unstyled">
+                <li>
+                  <button type="button" class="btn btn-fb"><i class="fa fa-facebook left"></i> Like us on Facebook</button>
+    <!--Twitter-->
+    
+    <!--Google +-->
+    
+    <!--Linkedin-->
+    
+                </li>
+                <li>
+                  <button type="button" class="btn btn-tw"><i class="fa fa-twitter left"></i> Like us on Twitter</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-gplus"><i class="fa fa-google-plus left"></i>Like us on Google</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-li"><i class="fa fa-linkedin left"></i> Like us on Instagram</button>
+                </li>
+              </ul>
+      
+            </div>
+            <!-- Grid column -->
+      
+          </div>
+          <!-- Grid row -->
+      
+        </div>
+        <!-- Footer Links -->
+      
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3" >© 2020 Copyright:
+          <a href="/"> Made with ❤ by Souradeep Dutta</a>
+        </div>
+        <!-- Copyright -->
+      
+      </footer>
+     </div> 
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
